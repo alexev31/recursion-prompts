@@ -7,31 +7,118 @@
 // Example: 5! = 5 x 4 x 3 x 2 x 1 = 120
 // factorial(5); // 120
 var factorial = function(n) {
+  if (n < 0) {
+    return null;
+  } else if(n === 0) {
+  	return 1;
+  }
+
+  return n * factorial(n-1);
+
 };
 
 // 2. Compute the sum of an array of integers.
 // sum([1,2,3,4,5,6]); // 21
 var sum = function(array) {
+	//array[0] + array[1] + ... + array[length - 1];
+	//need to do array[0] plus array [without first element] over and over
+    
+  if (array.length <= 0) {
+    return 0;
+  } else if (array.length === 1) {
+    return array[0];
+  }
+    
+	var copyOfArray = array.slice();
+	copyOfArray.shift();
+	return array[0] + sum(copyOfArray);
 };
 
 // 3. Sum all numbers in an array containing nested arrays.
 // arraySum([1,[2,3],[[4]],5]); // 15
 var arraySum = function(array) {
+  //sum each element of the array
+  //if an element is itself an array, sum the elements of that array
+
+  //iterate through array and call arraySum if any elements are themselves arrays
+
+  var copyOfArray = array.slice();
+
+  for(var i = 0; i < copyOfArray.length; i++) {
+    if (copyOfArray[i] instanceof Array) {
+    	//call arraySum on that element and save in var
+    	var summedElement = arraySum(copyOfArray[i]);
+    	//splice that element out
+    	copyOfArray.splice(i, 1);
+    	//splice in the new summed element
+    	copyOfArray.splice(i, 0, summedElement);
+      }
+    }
+  
+    if (copyOfArray.length <= 0) {
+      return 0;
+    } else if (copyOfArray.length === 1) {
+      return copyOfArray[0];
+    }
+
+	var shiftedCopy = copyOfArray.slice();
+	shiftedCopy.shift();
+
+	return copyOfArray[0] + sum(shiftedCopy);
+
 };
 
 // 4. Check if a number is even.
 var isEven = function(n) {
+  //if a number divided by 2 does not have a remainder, it is even
+
+  if (n / 2 === Math.floor(n/2)) {
+     return true;
+   } else {
+     return false;
+   }
+
+  //base case:
+  
+  //recursive case:
+  //am I doing something over and over again?  what is it?
+  return isEven(n);
+  
 };
 
 // 5. Sum all integers below a given integer.
 // sumBelow(10); // 45
-// sumBelow(7); // 21
+// sumBelow(7); // 21 = 6 + 5 + 4 + 3 + 2 + 1
 var sumBelow = function(n) {
+  //base case:
+  if (n === 0) {
+    return 0;
+  }
+  //recursive case for negatives:
+  if (n < 0) {
+    //make n positive
+    n = Math.abs(n);
+    //then reccurse as normal but return a negative
+    return -( (n - 1) + sumBelow(n - 1) );
+  }
+  //recursive case:
+  return (n - 1) + sumBelow(n - 1);
+
 };
 
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
+// var result = [];
 var range = function(x, y) {
+// var results = [];
+//   if (x + 1 === y || x === y) {
+//     return result;  //return range(x, y)?
+//   }
+
+//   result.push(x + 1);
+
+//   return range((x +1), y);
+
 };
 
 // 7. Compute the exponent of a number.
@@ -39,7 +126,27 @@ var range = function(x, y) {
 // 8^2 = 8 x 8 = 64. Here, 8 is the base and 2 is the exponent.
 // exponent(4,3); // 64
 // https://www.khanacademy.org/computing/computer-science/algorithms/recursive-algorithms/a/computing-powers-of-a-number
-var exponent = function(base, exp) {
+var exponent = function(base, exp) { // 4 ^ -2
+  if (exp === 0) {
+    return 1;
+  } else if (base < 0) {
+    return -( ( base * exponent(base, (exp - 1)) ) );
+  } else if (exp < 0) {
+    exp = -exp;
+    return 1/(base * exponent(base, (exp - 1)));
+//         1/ (4 * exponent(4, -1))
+  }
+  // if (exp === 1) {
+  //   return base;
+  // }
+
+  //multiply base by itself exp number of times, i.e. 8^3 = 8 * 8 * 8
+
+  // exponent(8, 3);
+  return base * exponent(base, (exp - 1));
+                // 8 * exponent(8, 2)
+                //    = 8 * exponent(8, 1)
+                //          = 8
 };
 
 // 8. Determine if a number is a power of two.
@@ -47,6 +154,13 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
+  //2^2 = 2 * 2 = 4
+  //2^4 = 2 * 2 * 2 * 2 = 16
+  //if 2^anything = n, than it is a power of 2
+
+  //multiply 2 by 2 until you reach n
+  //if the number reached by multiplying 2 is less than n, it is not a prime number
+  
 };
 
 // 9. Write a function that reverses a string.
